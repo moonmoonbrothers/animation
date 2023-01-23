@@ -1,0 +1,27 @@
+{
+  "name": "moon-animation-workspace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:moon-animation": "npm run build -workspace=@moonmoonbrothers/moon-animation",
+    "storybook:storybook-moon-animation": "npm run storybook -workspace=@moonmoonbrothers/storybook-moon-animation"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moonmoonbrothers/moon-animation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moonmoonbrothers/moon-animation/issues"
+  },
+  "homepage": "https://github.com/moonmoonbrothers/moon-animation#readme",
+  "workspaces": [
+    "./packages/moon-animation",
+    "./packages/storybook-moon-animation"
+  ],
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
+}
