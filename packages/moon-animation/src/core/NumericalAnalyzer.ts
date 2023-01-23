@@ -9,7 +9,7 @@ type NumericalAnalyzerConfig = {
   equation: Equation
 }
 
-export default class NumericalAnalyzer {
+export class NumericalAnalyzer {
   private moveInfo: MoveInfo
   private equation: Equation
   constructor({ moveInfo, equation }: NumericalAnalyzerConfig) {
@@ -52,3 +52,5 @@ export default class NumericalAnalyzer {
     return this.moveInfo
   }
 }
+
+export default NumericalAnalyzer

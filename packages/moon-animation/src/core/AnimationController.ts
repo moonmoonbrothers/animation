@@ -2,7 +2,7 @@ import { transform } from "../utils/transform"
 import FrameLoop from "./FrameLoop"
 import NumericalAnalyzer, { Equation, MoveInfo } from "./NumericalAnalyzer"
 
-class AnimationController<KEY extends string> {
+export class AnimationController<KEY extends string> {
   private frameLoop: FrameLoop
   private numericalAnalyzers: Record<KEY, NumericalAnalyzer>
 
@@ -35,6 +35,7 @@ class AnimationController<KEY extends string> {
 
       animateFn(values)
     })
+    console.log(this.frameLoop)
   }
 
   public updateConfigs(

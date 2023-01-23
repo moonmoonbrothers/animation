@@ -1,8 +1,8 @@
 export type LoopCallback = (dt: number) => void
 
-class FrameLoop {
+export class FrameLoop {
   private now: number = 0
-  private animationId: number
+  private animationId: number = -1
   private loopCallback: LoopCallback
 
   constructor(loopCallback: LoopCallback) {
@@ -18,7 +18,7 @@ class FrameLoop {
     this.now = Date.now()
     const dt = (prev ? Math.min(64, this.now - prev) : 16.667) * 0.001
     this.loopCallback(dt)
-    this.animationId = window.requestAnimationFrame(this.loop)
+    this.animationId = window.requestAnimationFrame(this.loop.bind(this))
   }
 
   start() {
