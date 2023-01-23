@@ -41,13 +41,44 @@ export class NumericalAnalyzer {
     }
   }
 
-  move(dt: number) {
-    const { velocity, displacement } = this.moveInfo
-    const acceleration = this.equation(this.moveInfo)
-    // 수치해석학 보고 더 나은 근사법 찾을 예정
+  move(h: number) {
+    const { velocity: v, displacement: x } = this.moveInfo
+
+    /*
+      Euler Method is replaced with(Runge-Kutta method) 
+    */
+    const k1 = {
+      v: v,
+      a: this.equation({ velocity: v, displacement: x }),
+    }
+
+    const k2 = {
+      v: v + (h * k1.a) / 2,
+      a: this.equation({
+        displacement: x + (h * k1.v) / 2,
+        velocity: v + (h * k1.a) / 2,
+      }),
+    }
+
+    const k3 = {
+      v: v + (h * k2.a) / 2,
+      a: this.equation({
+        displacement: x + (h * k2.v) / 2,
+        velocity: v + (h * k2.a) / 2,
+      }),
+    }
+
+    const k4 = {
+      v: v + h * k3.a,
+      a: this.equation({
+        displacement: x + k3.v * h,
+        velocity: v + h * k3.a,
+      }),
+    }
+
     this.moveInfo = {
-      velocity: velocity + acceleration * dt,
-      displacement: displacement + velocity * dt,
+      displacement: x + (h * (k1.v + 2 * k2.v + 2 * k3.v + k4.v)) / 6,
+      velocity: v + (h * (k1.a + 2 * k2.a + 2 * k3.a + k4.a)) / 6,
     }
     return this.moveInfo
   }

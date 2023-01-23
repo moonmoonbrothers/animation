@@ -35,7 +35,6 @@ export class AnimationController<KEY extends string> {
 
       animateFn(values)
     })
-    console.log(this.frameLoop)
   }
 
   public updateConfigs(
