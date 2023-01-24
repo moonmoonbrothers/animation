@@ -17,8 +17,8 @@ export class NumericalAnalyzer {
     this.moveInfo = moveInfo
   }
 
-  getMoveInfo() {
-    return this.moveInfo
+  getCurrentMoveInfo() {
+    return { ...this.moveInfo }
   }
 
   updateConfig({

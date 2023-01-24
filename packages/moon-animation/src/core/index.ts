@@ -1,3 +1,3 @@
 export * from './FrameLoop'
-export * from './AnimationController'
+export * from './LegacyAnimationController'
 export * from './NumericalAnalyzer'
