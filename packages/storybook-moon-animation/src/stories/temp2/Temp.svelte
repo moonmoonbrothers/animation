@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { AnimationController, MoonsController } from '@moonmoonbrothers/moon-animation';
-	import Page from '../../routes/+page.svelte';
-	const k = 9;
+	import {  MoonsController } from '@moonmoonbrothers/moon-animation';
 
 	let items = [
 		{
@@ -10,27 +8,54 @@
 		},
 		{
 			color: 'blue'
-		}
-	];
-
-	let values: Record<'x', number>[] = [
-		{
-			x: 200
 		},
 		{
-			x: -200
+			color: 'green'
+		},
+		{
+			color: 'teal'
+		},
+		{
+			color: 'white'
+		},
+		{
+			color: 'yellow'
+		},
+		{
+			color: 'purple',
+		},
+		{
+			color: 'orange',
+		},
+		{
+			color: 'lightgreen',
 		}
 	];
 
+	let values: Record<'x' | 'y', number>[] = [];
+
+	const K = 9;
+	const temp = (index: number) => {
+		return {
+			k: 4 + index / 2,
+			x: 400 - index * 50
+		};
+	};
 	const animationController = new MoonsController({
 		targetIds: items.map(({ color }) => color),
-		configFn: (index: number) => ({
-			x: {
-				moveInfo: { displacement: index ? 200 : -200, velocity: 0 },
-				equation: ({ displacement, velocity }) =>
-					-9 * (displacement - (index ? -200 : 200)) - velocity * 1
-			}
-		}),
+		configFn: (index: number) => {
+			const { k, x } = temp(index);
+			return {
+				x: {
+					moveInfo: { displacement: x, velocity: 0 },
+					equation: ({ displacement }) => -k * displacement
+				},
+				y: {
+					moveInfo: { displacement: 0, velocity: x * Math.sqrt(k) },
+					equation: ({ displacement }) => -k * displacement
+				}
+			};
+		},
 		animateFn: (props) => {
 			values = props;
 		}
@@ -42,36 +67,39 @@
 	});
 
 	const reverse = () => {
-		items = items.reverse();
+		items = items.sort(() => Math.random() - Math.random())
 		animationController.updateTargetIds(items.map(({ color }) => color));
 	};
 </script>
 
 <div class="container">
-	<button on:click={() => reverse()} class="button">Reverse</button>
+	<button on:click={() => reverse()} class="button">Random Mix!</button>
 	<div class="bound" />
 	{#each items as { color }, i}
-		{@const y = 0}
-		{@const { x } = values[i]}
-		<div
-			class="circle"
-			style="background-color: {color}; transform: translate(calc(-50% + {x}px), calc(-50% + {0}px))"
-		/>
+		{@const value = values[i]}
+		{#if value}
+			{@const { x, y } = values[i]}
+			<div
+				class="circle"
+				style="background-color: {color}; transform: translate(calc(-50% + {x}px), calc(-50% + {y}px))"
+			/>
+		{/if}
 	{/each}
 </div>
 
 <style>
 	.container {
 		position: relative;
-		height: 500px;
+		height: 1000px;
 	}
 
 	.bound {
+		--radius: 800px;
 		position: absolute;
-		width: 400px;
-		height: 400px;
-		background-color: gray;
-		border-radius: 200px;
+		width: var(--radius);
+		height: var(--radius);
+		border-radius: var(--radius);
+		background-color: black;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
@@ -79,8 +107,8 @@
 
 	.circle {
 		position: absolute;
-		width: 40px;
-		height: 40px;
+		width: 30px;
+		height: 30px;
 		border-radius: 200px;
 		top: 50%;
 		left: 50%;
